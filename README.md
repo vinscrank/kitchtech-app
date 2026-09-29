@@ -91,6 +91,8 @@ TanStack Query manages server state, caching, loading, errors, and data refresh 
 
 Tailwind CSS is used for styling and Sonner for user feedback.
 
+Basic accessibility follows WCAG 2.2: keyboard focus, labels, and screen-reader roles.
+
 ## Data Storage
 
 MySQL 8 is used for persistent storage and runs through Docker.
