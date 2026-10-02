@@ -6,7 +6,7 @@ import { FlipCard } from '../components/FlipCard'
 import { useFlashcards } from '../hooks/useFlashcards'
 
 export function StudyPage() {
-  const cards = useFlashcards()
+  const cards = useFlashcards(500, 0)
   const [index, setIndex] = useState(0)
   const list = cards.data ?? []
   const current = Math.min(index, Math.max(list.length - 1, 0))

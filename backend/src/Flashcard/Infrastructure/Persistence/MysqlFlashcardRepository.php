@@ -54,9 +54,10 @@ final class MysqlFlashcardRepository implements FlashcardRepository
     $stmt->execute([$id->toString()]);
   }
 
-  public function findAll(): array
+  public function findAll(int $limit, int $offset): array
   {
-    $stmt = $this->pdo->query('SELECT id, front, back FROM flashcards ORDER BY id DESC');
+    $stmt = $this->pdo->prepare('SELECT id, front, back FROM flashcards ORDER BY id DESC LIMIT ? OFFSET ?');
+    $stmt->execute([$limit, $offset]);
 
     return array_map($this->map(...), $stmt->fetchAll());
   }

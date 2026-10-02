@@ -2,7 +2,14 @@ import { api } from '../../../shared/api/client'
 import type { Flashcard, FlashcardInput } from '../model/flashcard'
 
 export const flashcardApi = {
-  list: () => api<{ data: Flashcard[] }>('/flashcards').then((body) => body.data),
+  list: (limit: number, offset: number) => {
+    const params = new URLSearchParams({
+      limit: String(limit),
+      offset: String(offset),
+    })
+
+    return api<{ data: Flashcard[] }>(`/flashcards?${params}`).then((body) => body.data)
+  },
   get: (id: string) => api<{ data: Flashcard }>(`/flashcards/${id}`).then((body) => body.data),
   create: (input: FlashcardInput) =>
     api<{ data: Flashcard }>('/flashcards', { method: 'POST', body: JSON.stringify(input) }).then((body) => body.data),

@@ -3,10 +3,10 @@ import { toast } from "sonner"
 import { flashcardApi } from "../api/flashcardApi"
 import { flashcardKeys, type FlashcardInput } from "../model/flashcard"
 
-export function useFlashcards() {
+export function useFlashcards(limit: number, offset: number) {
   return useQuery({
-    queryKey: flashcardKeys.all,
-    queryFn: flashcardApi.list,
+    queryKey: flashcardKeys.list(limit, offset),
+    queryFn: () => flashcardApi.list(limit, offset),
   })
 }
 

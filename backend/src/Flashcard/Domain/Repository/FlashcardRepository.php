@@ -17,5 +17,5 @@ interface FlashcardRepository
 
   public function delete(FlashcardId $id): void;
 
-  public function findAll(): array;
+  public function findAll(int $limit, int $offset): array;
 }

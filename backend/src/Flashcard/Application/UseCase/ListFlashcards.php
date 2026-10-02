@@ -13,11 +13,11 @@ final class ListFlashcards
   {
   }
 
-  public function execute(): array
+  public function execute(int $limit, int $offset): array
   {
     $data = [];
 
-    foreach ($this->repository->findAll() as $flashcard) {
+    foreach ($this->repository->findAll($limit, $offset) as $flashcard) {
       $data[] = FlashcardView::from($flashcard)->toArray();
     }
 

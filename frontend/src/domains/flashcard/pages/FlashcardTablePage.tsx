@@ -5,10 +5,14 @@ import { AsyncStatus } from '../../../shared/ui/async-status'
 import { Loader } from '../../../shared/ui/loader'
 import { useDeleteFlashcard, useFlashcards } from '../hooks/useFlashcards'
 
+const PAGE_SIZE = 4
+
 export function FlashcardTablePage() {
-  const cards = useFlashcards()
+  const [offset, setOffset] = useState(0)
+  const cards = useFlashcards(PAGE_SIZE, offset)
   const remove = useDeleteFlashcard()
   const [confirmId, setConfirmId] = useState<string | null>(null)
+
 
   return (
     <Page
@@ -23,7 +27,9 @@ export function FlashcardTablePage() {
       }
     >
       <AsyncStatus pending={cards.isPending} error={cards.error ?? remove.error} />
-      {cards.data?.length === 0 ? <p className="text-sm text-muted-foreground">No cards yet.</p> : null}
+      {cards.data?.length === 0 && offset === 0 ? (
+        <p className="text-sm text-muted-foreground">No cards yet.</p>
+      ) : null}
       {cards.data && cards.data.length > 0 ? (
         <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
           <div className="w-full overflow-auto">
@@ -59,6 +65,26 @@ export function FlashcardTablePage() {
               </tbody>
             </table>
           </div>
+        </div>
+      ) : null}
+      {cards.data && cards.data.length > 0 ? (
+        <div className="mt-4 flex justify-center gap-2">
+          <button
+            type="button"
+            className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+            disabled={offset === 0}
+            onClick={() => setOffset((value) => Math.max(0, value - PAGE_SIZE))}
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-md border border-input bg-background px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+            disabled={cards.data.length < PAGE_SIZE}
+            onClick={() => setOffset((value) => value + PAGE_SIZE)}
+          >
+            Next
+          </button>
         </div>
       ) : null}
       {confirmId ? (

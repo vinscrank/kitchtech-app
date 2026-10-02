@@ -25,7 +25,10 @@ final class FlashcardController
 
   public function index(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
   {
-    return $this->json($response, $this->listFlashcards->execute());
+    $limit = (int) ($request->getQueryParams()['limit'] ?? 10);
+    $offset = (int) ($request->getQueryParams()['offset'] ?? 0);
+
+    return $this->json($response, $this->listFlashcards->execute($limit, $offset));
   }
 
   public function show(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface

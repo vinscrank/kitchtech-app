@@ -11,5 +11,6 @@ export type FlashcardInput = {
 
 export const flashcardKeys = {
   all: ['flashcards'] as const,
-  detail: (id: string) => ['flashcards', id] as const,
+  list: (limit: number, offset: number) => ['flashcards', 'list', limit, offset] as const,
+  detail: (id: string) => ['flashcards', 'detail', id] as const,
 }
